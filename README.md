@@ -6,3 +6,5 @@
 * PUT|PATCH - api/posts/{id} - change Post
 * DELETE - api/posts/{id} - delete Post
 
+# Relationships Post->Comments
+

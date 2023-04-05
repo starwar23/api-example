@@ -10,11 +10,11 @@ use App\Models\Post;
 class PostController extends Controller
 {
     /**
-     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+     * @return array
      */
     public function index()
     {
-        return PostResource::collection(Post::all());
+        return PostResource::collection(Post::query()->with('comments')->get())->resolve();
     }
 
     /**
@@ -33,7 +33,7 @@ class PostController extends Controller
      */
     public function show($id)
     {
-        $post = Post::query()->findOrFail($id);
+        $post = Post::query()->with('comments')->findOrFail($id);
         return response()->json(new PostResource($post));
     }
 

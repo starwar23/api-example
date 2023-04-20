@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\PostRequest;
 use App\Http\Resources\PostResource;
 use App\Models\Post;
+use Illuminate\Support\Facades\Cache;
 
 class PostController extends Controller
 {
@@ -14,7 +15,10 @@ class PostController extends Controller
      */
     public function index()
     {
-        return PostResource::collection(Post::query()->with('comments')->get())->resolve();
+        $posts = Cache::remember('posts', null, function () {
+            return Post::query()->with('comments')->get();
+        });
+        return PostResource::collection($posts)->resolve();
     }
 
     /**
